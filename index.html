@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photobox Polaroid dan Classic- Template Teks (Live)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body
+    class="bg-gradient-to-br from-slate-900 to-slate-700 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 selection:bg-sky-400 selection:text-sky-900">
+
+    <div id="messageBox" class="message-box">Pesan akan muncul di sini</div>
+
+    <div class="bg-slate-800 p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-5xl">
+        <h1
+            class="text-3xl md:text-4xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-cyan-300">
+            📸 Photobox Polaroid Pro</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-700 p-4 rounded-lg shadow-lg flex flex-col items-center">
+                <h2 class="text-xl font-semibold mb-3 text-sky-300">Kamera & Pengaturan</h2>
+                <div class="video-container w-full bg-slate-600 rounded-lg mb-4 overflow-hidden shadow-inner">
+                    <video id="videoElement" autoplay playsinline></video>
+                </div>
+
+                <div class="mb-4 w-full">
+                    <label for="layoutSelector" class="block text-sm font-medium text-slate-300 mb-1">Pilih Tata Letak
+                        Cetak:</label>
+                    <select id="layoutSelector"
+                        class="w-full bg-slate-600 border border-slate-500 text-slate-100 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block p-2.5">
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 w-full mb-3">
+                    <button id="captureButton"
+                        class="btn-photobox col-span-2 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75">
+                        Ambil Foto
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <button id="switchCameraButton"
+                        class="btn-photobox bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75 hidden">
+                        Ganti Kamera
+                    </button>
+                    <button id="mirrorToggleButton"
+                        class="btn-photobox bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75">
+                        Cermin: Aktif
+                    </button>
+                </div>
+                <canvas id="canvasElement" class="hidden"></canvas>
+            </div>
+
+            <div class="bg-slate-700 p-4 rounded-lg shadow-lg flex flex-col">
+                <h2 class="text-xl font-semibold mb-3 text-center text-sky-300">Pratinjau & Edit</h2>
+                <div id="photoLayoutAreaContainer"
+                    class="flex-grow flex justify-center items-center p-2 bg-slate-600/50 rounded-md shadow-inner mb-4 min-h-[200px] md:min-h-[280px] overflow-auto relative touch-none">
+                    <div id="photoLayoutArea">
+                    </div>
+                    <div id="stickerPreviewOverlay" class="absolute inset-0 pointer-events-none"></div>
+                    <div id="textPreviewOverlay" class="absolute inset-0 pointer-events-none"></div>
+                </div>
+                <div id="editingControlsPanel"
+                    class="editing-controls bg-slate-600 p-4 rounded-lg shadow-md hidden space-y-3">
+                    <div>
+                        <label for="bgColorPicker" class="text-sm font-medium text-slate-200">Warna Latar Pratinjau &
+                            Unduhan:</label>
+                        <input type="color" id="bgColorPicker" value="#E5E7EB"
+                            class="w-full h-10 p-1 border-slate-500 rounded-md">
+                    </div>
+                    <div>
+                        <label for="brightnessSlider" class="text-sm font-medium text-slate-200">Kecerahan Foto: <span
+                                id="brightnessValue">100</span>%</label>
+                        <input type="range" id="brightnessSlider" min="0" max="200" value="100" class="w-full">
+                    </div>
+                    <div>
+                        <label for="contrastSlider" class="text-sm font-medium text-slate-200">Kontras Foto: <span
+                                id="contrastValue">100</span>%</label>
+                        <input type="range" id="contrastSlider" min="0" max="200" value="100" class="w-full">
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="grayscaleToggle"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="grayscaleToggle" class="ml-2 text-sm font-medium text-slate-200">Efek
+                            Grayscale</label>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-slate-200">Tambah Hiasan:</label>
+                        <div class="grid grid-cols-3 gap-2 mt-1">
+                            <button data-sticker-type="heart" data-sticker-emoji="❤️"
+                                class="btn-photobox sticker-add-btn bg-pink-500 hover:bg-pink-600 text-white text-xs py-2 px-2 rounded-md">❤️
+                                Hati (<span data-sticker-count="heart">0</span>)</button>
+                            <button data-sticker-type="star" data-sticker-emoji="⭐"
+                                class="btn-photobox sticker-add-btn bg-yellow-500 hover:bg-yellow-600 text-white text-xs py-2 px-2 rounded-md">⭐
+                                Bintang (<span data-sticker-count="star">0</span>)</button>
+                            <button data-sticker-type="pentol" data-sticker-emoji="👻"
+                                class="btn-photobox sticker-add-btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 px-2 rounded-md">👻
+                                Pentol (<span data-sticker-count="pentol">0</span>)</button>
+                        </div>
+                        <button id="removeLastStickerButton"
+                            class="btn-photobox w-full bg-orange-500 hover:bg-orange-600 text-white text-xs py-2 px-2 rounded-md mt-2">Hapus
+                            Hiasan Terakhir</button>
+                    </div>
+                    <div class="border-t border-slate-500 pt-3">
+                        <label class="text-sm font-medium text-slate-200">Tambah Teks:</label>
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <select id="textTemplateCategorySelector"
+                                class="text-xs bg-slate-500 p-2 rounded-md text-slate-100">
+                                <option value="">Pilih Kategori Kata</option>
+                                <option value="romantis">Romantis</option>
+                                <option value="pertemanan">Pertemanan</option>
+                                <option value="persahabatan">Persahabatan</option>
+                            </select>
+                            <select id="textTemplateSelector"
+                                class="text-xs bg-slate-500 p-2 rounded-md text-slate-100">
+                                <option value="">Pilih Kata-Kata</option>
+                            </select>
+                        </div>
+                        <textarea id="textInput"
+                            class="w-full bg-slate-500 p-2 rounded-md text-sm text-slate-100 placeholder-slate-400"
+                            rows="2" placeholder="Atau ketik teks custom di sini..."></textarea>
+                        <div class="grid grid-cols-2 gap-2 mt-2 items-center">
+                            <select id="textPositionSelector"
+                                class="text-xs bg-slate-500 p-2 rounded-md text-slate-100 col-span-2"> {/* Dibuat
+                                col-span-2 */}
+                                <option value="top-center">Atas Tengah</option>
+                                <option value="bottom-center">Bawah Tengah</option>
+                                <option value="middle-center">Tengah-Tengah</option>
+                                <option value="top-left">Atas Kiri</option>
+                                <option value="top-right">Atas Kanan</option>
+                                <option value="bottom-left">Bawah Kiri</option>
+                                <option value="bottom-right">Bawah Kanan</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mt-2 items-center">
+                            <select id="fontFamilySelector" class="text-xs bg-slate-500 p-2 rounded-md text-slate-100">
+                                <option value="Arial">Arial</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Comic Sans MS">Comic Sans</option>
+                                <option value="Impact">Impact</option>
+                                <option value="Courier New">Courier New</option>
+                            </select>
+                            <input type="number" id="fontSizeInput" value="16" min="8" max="72"
+                                class="text-xs bg-slate-500 p-2 rounded-md text-slate-100 text-center">
+                            <input type="color" id="fontColorPicker" value="#FFFFFF"
+                                class="h-9 p-0.5 border-slate-500 rounded-md">
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <input type="checkbox" id="textBoldToggle"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="textBoldToggle" class="ml-2 text-xs font-medium text-slate-200">Teks Tebal
+                                (Bold)</label>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button id="addTextButton"
+                                class="btn-photobox bg-purple-500 hover:bg-purple-600 text-white text-xs py-2 px-2 rounded-md">Tambah
+                                Teks Ini</button>
+                            <button id="removeLastTextButton"
+                                class="btn-photobox bg-orange-500 hover:bg-orange-600 text-white text-xs py-2 px-2 rounded-md">Hapus
+                                Teks Terakhir</button>
+                        </div>
+                    </div>
+
+                    <button id="downloadButton"
+                        class="btn-photobox w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md mt-2">
+                        Download Hasil Cetak
+                    </button>
+                </div>
+                <button id="resetButton"
+                    class="btn-photobox w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md mt-3 hidden">
+                    Reset Foto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-slate-400 mt-8 text-sm">
+        Dibuat dengan ❤️
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
