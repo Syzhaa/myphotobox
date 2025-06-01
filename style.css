@@ -1,165 +1,170 @@
 body {
-    font-family: 'Inter', sans-serif;
-}
+            font-family: 'Inter', sans-serif;
+            }
+                #videoElement {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 0.5rem;
+                    transition: transform 0.3s ease-out;
+                }
+                .video-container {
+                    width: 100%;
+                    aspect-ratio: 4 / 3;
+            background-color: #374151;
+                /* slate-700 */
+                border-radius: 0.5rem;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-#videoElement {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0.5rem;
-    transition: transform 0.3s ease-out;
-}
-
-.video-container {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    background-color: #374151;
-    /* slate-700 */
-    border-radius: 0.5rem;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.polaroid-frame {
-    background-color: white;
-    padding: 8px 8px 24px 8px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.18);
-    border-radius: 2px;
-    display: flex;
-    flex-direction: column;
-}
-
-.photo-slot-plain {
-    background-color: #4a5568;
-    overflow: hidden;
-    border-radius: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.polaroid-image-wrapper,
-.photo-slot-plain img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.polaroid-image-wrapper {
-    background-color: #d1d5db;
-}
-
-.polaroid-image-wrapper img,
-.photo-slot-plain img {
-    transition: filter 0.3s ease-out;
-}
-
-.btn-photobox {
-    transition: all 0.3s ease;
-}
-
-.btn-photobox:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.btn-photobox:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.message-box {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    border-radius: 8px;
-    color: white;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    pointer-events: none;
-}
-
-.message-box.show {
-    opacity: 1;
-}
-
-.message-box.error {
-    background-color: #ef4444;
-}
-
-.message-box.info {
-    background-color: #3b82f6;
-}
-
-.message-box.success {
-    background-color: #22c55e;
-}
-
-#photoLayoutAreaContainer {
-    position: relative;
-}
-
-#photoLayoutArea {
-    display: grid;
-    gap: 8px;
-    width: 100%;
-    max-width: 100%;
-}
-
-.live-sticker,
-.live-text-preview {
-    position: absolute;
-    user-select: none;
-    opacity: 0.85;
-    text-align: center;
-    pointer-events: none;
-}
-
-.live-sticker {
-    font-size: 24px;
-}
+                .polaroid-frame {
+                    background-color: white;
+                    padding: 8px 8px 24px 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.18);
+                border-radius: 2px;
+                display: flex;
+                flex-direction: column;
+            }
+                .photo-slot-plain {
+                    background-color: #4a5568;
+                    overflow: hidden;
+                    border-radius: 2px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .polaroid-image-wrapper {
+                    /* Wrapper di dalam polaroid */
+                    width: 100%;
+            /* height: 100%; Dihapus agar aspect-ratio dari JS yang mengontrol */
+                background-color: #d1d5db;
+                /* gray-300 sebagai placeholder */
+                overflow: hidden;
+                /* Aspek rasio untuk wrapper ini akan diatur oleh JS */
+            }
+            
+            .polaroid-image-wrapper img,
+            .photo-slot-plain img {
+                /* Gambar di dalam wrapper atau slot plain */
+                width: 100%;
+                height: 100%;
+                /* Gambar mengisi wrapper/slotnya */
+                display: block;
+            object-fit: cover;
+                /* Ini kunci agar foto mengisi dan di-crop sesuai aspek rasio wrapper/slot */
+                transition: filter 0.3s ease-out;
+            }
 
 
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 8px;
-    background: #4a5568;
-    border-radius: 5px;
-    outline: none;
-}
+                .btn-photobox {
+                    transition: all 0.3s ease;
+                }
+                .btn-photobox:hover {
+                    transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+                .btn-photobox:active {
+                    transform: translateY(0px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+                .message-box {
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    color: white;
+            z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+                pointer-events: none;
+            }
+                .message-box.show {
+                    opacity: 1;
+                }
+        
+                .message-box.error {
+                    background-color: #ef4444;
+                }
+        
+                .message-box.info {
+                    background-color: #3b82f6;
+                }
+        
+                .message-box.success {
+                    background-color: #22c55e;
+                }
 
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #3b82f6;
-    border-radius: 50%;
-    cursor: pointer;
-}
+                #photoLayoutAreaContainer {
+                    position: relative;
+                }
+                #photoLayoutArea {
+                    display: grid;
+                    gap: 8px;
+                    width: 100%;
+                    max-width: 100%;
+                }
+                #stickerPreviewOverlay {
+                    position: absolute;
+                    inset: 0;
+                    pointer-events: none;
+                    z-index: 9;
+                }
+        
+                #textPreviewOverlay {
+                    position: absolute;
+                    inset: 0;
+                    pointer-events: none;
+                    z-index: 10;
+                }
+        
+                .live-sticker,
+                .live-text-preview {
+                    position: absolute;
+                    user-select: none;
+                    opacity: 0.85;
+                    text-align: center;
+                    pointer-events: none;
+                }
+                .live-sticker {
+                    font-size: 24px;
+                }
 
-input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #3b82f6;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
 
-.editing-controls label {
-    margin-bottom: 0.25rem;
-    display: block;
-}
-
-.editing-controls .grid-cols-fr-auto-fr .col-span-1 {
-    min-width: 0;
-}
+                input[type="range"] {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 100%;
+                    height: 8px;
+                    background: #4a5568;
+                    border-radius: 5px;
+                    outline: none;
+                }
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 20px;
+                    height: 20px;
+                    background: #3b82f6;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+                input[type="range"]::-moz-range-thumb {
+                    width: 20px;
+                    height: 20px;
+                    background: #3b82f6;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: none;
+                }
+                .editing-controls label {
+                    margin-bottom: 0.25rem;
+                    display: block;
+                }
+                .editing-controls .grid-cols-fr-auto-fr .col-span-1 {
+                    min-width: 0;
+                }
